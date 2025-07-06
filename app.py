@@ -52,17 +52,43 @@ st.markdown("""
 # Chargement des données et du modèle
 @st.cache_data
 def load_data_and_model():
-    df = pd.read_csv("nasa_power_data.csv")
+  current_dir = os.path.dirname(os.path.abspath(__file__))
+    csv_path = os.path.join(current_dir, "nasa_power_data.csv")
+    if not os.path.exists(csv_path):
+        st.error(f"Le fichier {csv_path} est introuvable.")
+        return None, None, None, None, None
+    df = pd.read_csv(csv_path)
     df['timestamp'] = pd.to_datetime(df['timestamp'])
-    df_curve_power = pd.read_csv("courbe_puissance.csv")
+
+    curve_path = os.path.join(current_dir, "courbe_puissance.csv")
+    if not os.path.exists(curve_path):
+        st.error(f"Le fichier {curve_path} est introuvable.")
+        return None, None, None, None, None
+    df_curve_power = pd.read_csv(curve_path)
     power_curve = interp1d(df_curve_power["wind_speed"], df_curve_power["power"], bounds_error=False, fill_value=0)
+
     model_xgb1 = XGBRegressor()
+    model_path1 = os.path.join(current_dir, "model_xgb_eolienne.json")
+    if not os.path.exists(model_path1):
+        st.error(f"Le fichier {model_path1} est introuvable.")
+        return None, None, None, None, None
+    try:
+        model_xgb1.load_model(model_path1)
+    except Exception as e:
+        st.error(f"Erreur lors du chargement de {model_path1}: {str(e)}")
+        return None, None, None, None, None
+
     model_xgb2 = XGBRegressor()
-    # model_xgb3 = XGBRegressor()
-    # Chargement des modèles XGBoost
-    model_xgb1.load_model("model_xgb_eolienne.json")
-    model_xgb2.load_model("model_xgb_eolienne2.json")
-    # model_xgb3.load_model("modele/model_xgb_eolienne3.json")
+    model_path2 = os.path.join(current_dir, "model_xgb_eolienne2.json")
+    if not os.path.exists(model_path2):
+        st.error(f"Le fichier {model_path2} est introuvable.")
+        return None, None, None, None, None
+    try:
+        model_xgb2.load_model(model_path2)
+    except Exception as e:
+        st.error(f"Erreur lors du chargement de {model_path2}: {str(e)}")
+        return None, None, None, None, None
+
     return df, df_curve_power, power_curve, model_xgb1, model_xgb2
 
 df, df_curve_power, power_curve, model_xgb1, model_xgb2 = load_data_and_model()
