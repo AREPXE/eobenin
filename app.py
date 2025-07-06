@@ -9,7 +9,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime, time
 import os
-import urllib.request
 
 # Configuration de la page
 st.set_page_config(page_title="ÉoBénin", layout="wide", page_icon="🌬️")
@@ -52,25 +51,6 @@ st.markdown("""
 
 # Chargement des données et du modèle
 @st.cache_data
-def telecharger_si_absent(nom_fichier, url):
-    if not os.path.exists(nom_fichier):
-        print(f"Téléchargement de {nom_fichier}...")
-        urllib.request.urlretrieve(url, nom_fichier)
-    else:
-        print(f"{nom_fichier} déjà présent.")
-
-# Télécharger les deux modèles
-telecharger_si_absent(
-    "model_xgb_eolienne.json",
-    "https://drive.google.com/uc?export=download&id=1aK5zjxz7gabROmqQCok0jbKWCmUArHle"
-)
-
-telecharger_si_absent(
-    "model_xgb_eolienne2.json",
-    "https://drive.google.com/uc?export=download&id=1Dc0VtycR9SB0Mkmj-kBTgv9n5p7GouIq"
-)
-
-
 def load_data_and_model():
     df = pd.read_csv("nasa_power_data.csv")
     df['timestamp'] = pd.to_datetime(df['timestamp'])
@@ -344,7 +324,7 @@ elif page == "Documentation":
     ## Modèle
     - **Algorithme** : XGBoost Regressor
     - **Paramètres** : 1,000,000 estimateurs, taux d'apprentissage = 1
-    - **Métriques** : RMSE, R²
+    - **Métriques** : MSE, MAE, R²
 
     ## Courbe de Puissance
     La courbe de puissance de l'éolienne Enercon E48/800 est interpolée à partir de données fournies dans `courbe_puissance.csv`.
