@@ -171,8 +171,8 @@ elif page == "Prédiction":
                 temp = st.number_input("Température (°C)", -50.0, 50.0, 0.0)
                 humidity = st.number_input("Humidité (%)", 0.0, 100.0, 0.0)
             with col2:
-                pressure = st.number_input("Pression (hPa)", 0.0, 1200.0, 0.0)
-                precipitation = st.number_input("Précipitations (mm)", 0.0, 100.0, 0.0)
+                pressure = st.number_input("Pression (kPa)", 0.0, 1200.0, 0.0)
+                precipitation = st.number_input("Précipitations (mm)", 0.0, 1200.0, 0.0)
         if prediction_mode in ["Paramètres météo & temps", "Temps uniquement"]:
             col1, col2 = st.columns(2)
             with col1:
