@@ -351,7 +351,7 @@ elif page == "Documentation":
     ## Modèle
     - **Algorithme** : XGBoost Regressor
     - **Paramètres** : 1,000,000 estimateurs, taux d'apprentissage = 1
-    - **Métriques** : MSE, MAE, R²
+    - **Métriques** : RMSE, R²
 
     ## Courbe de Puissance
     La courbe de puissance de l'éolienne Enercon E48/800 est interpolée à partir de données fournies dans `courbe_puissance.csv`.
